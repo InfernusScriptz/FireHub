@@ -360,4 +360,7 @@ function pageList:Notify(text,time)
 		frame:Destroy()
 	end)()
 end
+warn([[Fire Hub:
+Made by GodWorldX / Infernus#0863
+Thank you for using my hub!]])
 return pagelist,close,mainFrame,screenGui,logo,title
