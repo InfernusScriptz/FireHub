@@ -25,7 +25,7 @@ invisTopFrame.Position = UDim2.fromScale(0.5,0.32)
 invisTopFrame.Size = UDim2.fromScale(0.3,0.04)
 local title = Instance.new("TextLabel",topFrame)
 title.BackgroundTransparency = 1
-title.Text = fullName
+title.Text = _G.fullName
 title.TextColor3 = Color3.fromRGB(0,0,0)
 title.TextScaled = true
 title.TextXAlignment = Enum.TextXAlignment.Left
@@ -41,7 +41,7 @@ local logo = Instance.new("ImageLabel",topFrame)
 logo.BackgroundTransparency = 1
 logo.Size = UDim2.fromScale(0.1,0.8)
 logo.Position = UDim2.fromScale(0.01,0.1)
-logo.Image = logoImage
+logo.Image = _G.logoImage
 local as = Instance.new("UIAspectRatioConstraint",logo)
 as.AspectRatio = 1
 local corner = Instance.new("UICorner",logo)
@@ -65,29 +65,10 @@ close.ZIndex = 2
 close.MouseButton1Click:Connect(function()
 	if closed then return end
 	closed = true
-	if inGodMode then
-		char.Collision.Position = char.Collision.Position + Vector3.new(0,10,0)
-	end
 	_G.loaded123FireDoors = nil
 	game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0,0)}):Play()
-	for i,v in pairs(bools) do
-		if i and v then
-			bools[i] = false
-		end
-	end
-	for i,v in pairs(ppNames) do
-		if i and v then
-			ppNames[i] = false
-		end
-	end
-	for i,v in pairs(connectedFunctions) do
-		if i and v then
-			connectedFunctions[i]:Disconnect()
-		end
-	end
-	wait(0)
-	hum:SetAttribute("SpeedBoost",0)
 	task.wait(2)
+	wait(0)
 	screenGui:Destroy()
 end)
 local minimize = close:Clone()
@@ -126,7 +107,6 @@ minimize.MouseButton1Click:Connect(function()
 	task.wait(1.8)
 	mainFrame.Visible = false
 end)
-connectedFunctions[#connectedFunctions+1] = workspace.DescendantAdded:Connect(descendant)
 local pagelist = Instance.new("ScrollingFrame",mainFrame)
 pagelist.Size = UDim2.fromScale(0.2,0.9)
 pagelist.Position = UDim2.fromScale(0,0.1)
@@ -359,7 +339,7 @@ function pageList:Notify(text,time)
 		local title = Instance.new("TextLabel",frame)
 		title.BackgroundTransparency = 1
 		title.TextXAlignment = Enum.TextXAlignment.Left
-		title.Text = actualName
+		title.Text = _G.actualName
 		title.Font = Font
 		title.BorderSizePixel = 0
 		title.TextScaled = true
@@ -379,4 +359,4 @@ function pageList:Notify(text,time)
 		frame:Destroy()
 	end)()
 end
-return pagelist
+return pagelist,close,mainFrame,screenGui,logo,title
