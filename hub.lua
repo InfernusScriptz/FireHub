@@ -1,3 +1,4 @@
+print("Loading FireHub")
 local screenGui = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
 screenGui.DisplayOrder = 25000
 local Font = Enum.Font.Oswald
@@ -360,7 +361,7 @@ function pageList:Notify(text,time)
 		frame:Destroy()
 	end)()
 end
-warn([[Fire Hub:
+warn([[FireHub:
 Made by GodWorldX / Infernus#0863
 Thank you for using my hub!]])
 return pageList,close,mainFrame,screenGui,logo,title
