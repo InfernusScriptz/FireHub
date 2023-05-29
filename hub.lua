@@ -1,5 +1,6 @@
 local screenGui = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
 screenGui.DisplayOrder = 25000
+local Font = Enum.Font.Oswald
 local mainFrame = Instance.new("Frame",screenGui)
 mainFrame.Size = UDim2.fromScale(0,0.4)
 game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0.3,0.4)}):Play()
