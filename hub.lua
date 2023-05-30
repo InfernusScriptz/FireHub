@@ -1,6 +1,6 @@
-local Font = Enum.Font.Oswald
-local screenGui = Instance.new("ScreenGui",game.CoreGui)
-screenGui.DisplayOrder = 25000
+local Font = Enum.Font.Oswald --А мне по хую
+local screenGui = Instance.new("ScreenGui",game.CoreGui) --блять :(
+screenGui.DisplayOrder = 25000 --Я бронированый >:D
 local mainFrame = Instance.new("Frame",screenGui)
 mainFrame.Size = UDim2.fromScale(0,0.4)
 game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0.3,0.4)}):Play()
