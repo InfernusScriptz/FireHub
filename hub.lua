@@ -321,7 +321,7 @@ list.SortOrder = Enum.SortOrder.LayoutOrder
 list.Padding = UDim.new(0.02,0)
 list.FillDirection = Enum.FillDirection.Vertical
 list.VerticalAlignment = Enum.VerticalAlignment.Bottom
-function pageList:Notify(text,time)
+function pageList.Notify(text,time)
 	coroutine.wrap(function()
 		local time = time or 5
 		local frame = Instance.new("Frame",notificationLabel)
@@ -361,5 +361,4 @@ function pageList:Notify(text,time)
 		frame:Destroy()
 	end)()
 end
-local pagelist = pageList
-return pagelist,close,mainFrame,screenGui,logo,title
+return pageList,close,mainFrame,screenGui,logo,title
