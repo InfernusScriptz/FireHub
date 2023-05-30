@@ -1,5 +1,5 @@
 local Font = Enum.Font.Oswald
-local screenGui = Instance.new("ScreenGui",game.CoreGui) --А мне пахую
+local screenGui = Instance.new("ScreenGui",game.CoreGui) --А мне по хую
 screenGui.DisplayOrder = 25000 --Я бронированый >:D
 local mainFrame = Instance.new("Frame",screenGui)
 mainFrame.Size = UDim2.fromScale(0,0.4)
