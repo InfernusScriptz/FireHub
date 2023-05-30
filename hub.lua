@@ -361,5 +361,5 @@ function pageList:Notify(text,time)
 		frame:Destroy()
 	end)()
 end
-pagelist = pageList
+local pagelist = pageList
 return pagelist,close,mainFrame,screenGui,logo,title
