@@ -158,7 +158,7 @@ function pageList.AddPage(pageName)
 	grid.CellSize = UDim2.new(1,0,0,50)
 	grid.SortOrder = Enum.SortOrder.LayoutOrder
 	local funcs = {}
-	function funcs:CreateLabel(text)
+	function funcs.CreateLabel(text)
 		local label = Instance.new("TextLabel",frame)
 		label.Text = text
 		label.Font = Font
@@ -168,7 +168,7 @@ function pageList.AddPage(pageName)
 		label.TextColor3 = Color3.fromRGB(255,255,255)
 		return label
 	end
-	function funcs:CreateButton(text,func)
+	function funcs.CreateButton(text,func)
 		local label = Instance.new("TextButton",frame)
 		label.Text = text
 		label.Font = Font
@@ -180,7 +180,7 @@ function pageList.AddPage(pageName)
 		label.TextXAlignment = Enum.TextXAlignment.Left
 		return label
 	end
-	function funcs:CreateTextBox(text,func)
+	function funcs.CreateTextBox(text,func)
 		local label = Instance.new("TextBox",frame)
 		label.PlaceholderText = text
 		label.Font = Font
@@ -199,7 +199,7 @@ function pageList.AddPage(pageName)
 		end)
 		return label
 	end
-	function funcs:CreateSwitch(text,func)
+	function funcs.CreateSwitch(text,func)
 		local toggle = false
 		local label = Instance.new("TextButton",frame)
 		label.Text = text
@@ -232,7 +232,7 @@ function pageList.AddPage(pageName)
 		end)
 		return label
 	end
-	function funcs:CreateSlider(text,minVal,maxVal,step,func)
+	function funcs.CreateSlider(text,minVal,maxVal,step,func)
 		local minVal = minVal
 		if minVal <= 0 then
 			minVal = 0
