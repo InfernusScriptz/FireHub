@@ -291,6 +291,8 @@ function pageList.AddPage(pageName)
 		sliderFrame.BorderSizePixel = 0
 		sliderFrame.BackgroundColor3 = Color3.fromRGB(25,25,25)
 		sliderFrame.ClipsDescendants = true
+		local corner = Instance.new("UICorner",sliderFrame)
+		corner.CornerRadius = UDim.new(0.2,0)
 		local currentStep = Instance.new("TextLabel",label)
 		currentStep.BackgroundTransparency = 1
 		currentStep.Size = UDim2.fromScale(0.2,1)
@@ -309,6 +311,7 @@ function pageList.AddPage(pageName)
 		local mouseEnter = false
 		for i=1,steps do
 			local stepButton = Instance.new("TextButton",sliderFrame)
+			corner:Clone().Parent = stepButton
 			stepButton.BackgroundTransparency = 1
 			stepButton.BackgroundColor3 = Color3.fromRGB(255,150,0)
 			stepButton.BorderSizePixel = 0
