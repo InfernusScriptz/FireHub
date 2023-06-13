@@ -4,7 +4,7 @@ local ver = "2.0.0"
 local fullName = name.." ["..ver.."]"
 _G.fullName = _G.fullName or fullName
 _G.actualName = _G.actualName or name
-_G.logoImage = _G.logoImage or "http://www.roblox.com/asset/?id=124133244"
+_G.logoImage = _G.logoimage or "http://www.roblox.com/asset/?id=124133244"
 local parent = game["Run Service"]:IsStudio() and game.Players.LocalPlayer.PlayerGui or not game["Run Service"]:IsStudio() and game.CoreGui or game.Players.LocalPlayer.PlayerGui
 local screenGui = Instance.new("ScreenGui",parent)
 screenGui.DisplayOrder = 25000
@@ -323,9 +323,13 @@ function pageList.AddPage(pageName)
 					end)()
 					cStep = (math.round(((i-1)*step)*1000))/1000
 					currentStep.Text = cStep+minVal
-					for i,v in pairs(sliderFrame:GetChildren()) do
+					for index,v in pairs(sliderFrame:GetChildren()) do
 						if v and v:IsA("TextButton") then
-							v.BackgroundTransparency = 1
+							if index == i or index <= i+1 then
+								v.BackgroundTransparency = 0
+							else
+								v.BackgroundTransparency = 1
+							end
 						end
 					end
 					stepButton.BackgroundTransparency = 0
@@ -346,9 +350,13 @@ function pageList.AddPage(pageName)
 					mouseEnter = false
 				end)()
 				currentStep.Text = cStep+minVal
-				for i,v in pairs(sliderFrame:GetChildren()) do
+				for index,v in pairs(sliderFrame:GetChildren()) do
 					if v and v:IsA("TextButton") then
-						v.BackgroundTransparency = 1
+						if index == i or index <= i+1 then
+							v.BackgroundTransparency = 0
+						else
+							v.BackgroundTransparency = 1
+						end
 					end
 				end
 				stepButton.BackgroundTransparency = 0
@@ -357,6 +365,9 @@ function pageList.AddPage(pageName)
 			stepButton.MouseButton1Up:Connect(function()
 				m1Down = false
 			end)
+		end
+		if sliderFrame:GetChildren()[2] and sliderFrame:GetChildren()[2]:IsA("TextButton") then
+			sliderFrame:GetChildren()[2].BackgroundTransparency = 0
 		end
 		return label
 	end
