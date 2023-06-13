@@ -1,6 +1,15 @@
 local Font = Enum.Font.Oswald
-local screenGui = Instance.new("ScreenGui",game.CoreGui) --А мне по хую
-screenGui.DisplayOrder = 25000 --Я бронированый >:D
+local name = "Fire Hub"
+local ver = "2.0.0"
+local fullName = name.." ["..ver.."]"
+_G.fullName = _G.fullName or fullName
+_G.actualName = _G.actualName or name
+_G.logoImage = _G.logoimage or "http://www.roblox.com/asset/?id=124133244"
+local parent = game["Run Service"]:IsStudio() and game.Players.LocalPlayer.PlayerGui or not game["Run Service"]:IsStudio() and game.CoreGui or game.Players.LocalPlayer.PlayerGui
+local screenGui = Instance.new("ScreenGui",parent)
+screenGui.DisplayOrder = 25000
+local clickSound = Instance.new("Sound",screenGui)
+clickSound.SoundId = "rbxassetid://558993260"
 local mainFrame = Instance.new("Frame",screenGui)
 mainFrame.Size = UDim2.fromScale(0,0.4)
 game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0.3,0.4)}):Play()
@@ -11,7 +20,7 @@ mainFrame.Position = UDim2.fromScale(0.5,0.5)
 local invisTopFrame = Instance.new("TextButton",screenGui)
 local topFrame = Instance.new("Frame",mainFrame)
 topFrame.BorderSizePixel = 0
-topFrame.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+topFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 topFrame.Size = UDim2.fromScale(1,0.1)
 invisTopFrame.Text = ""
 invisTopFrame.BackgroundTransparency = 1
@@ -32,12 +41,10 @@ title.TextScaled = true
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Font = Font
 local stroke = Instance.new("UIStroke",title)
-stroke.Thickness = 3
+stroke.Thickness = 1
 title.Size = UDim2.fromScale(0.3,1)
 title.Position = UDim2.fromScale(0.075,0)
-stroke.Color = Color3.fromRGB(255,255,255)
-local grad = Instance.new("UIGradient",stroke)
-grad.Color = ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(255,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,0))}
+stroke.Color = Color3.fromRGB(75,0,0)
 local logo = Instance.new("ImageLabel",topFrame)
 logo.BackgroundTransparency = 1
 logo.Size = UDim2.fromScale(0.1,0.8)
@@ -51,22 +58,32 @@ local mainStroke = stroke
 local stroke = stroke:Clone()
 stroke.Parent = logo
 stroke.Color = Color3.fromRGB(0,0,0)
+stroke.Thickness = 2
 local stroke = stroke:Clone()
 stroke.Parent = mainFrame
+stroke.Thickness = 3
 local close = Instance.new("TextButton",topFrame)
 close.Size = UDim2.fromScale(0.1,0.8)
 close.Position = UDim2.fromScale(0.89,0.1)
 close.Text = "X"
 close.TextScaled = true
-close.BackgroundColor3 = Color3.fromRGB(100,0,0)
+close.BackgroundColor3 = Color3.fromRGB(255,0,0)
 close.TextColor3 = Color3.fromRGB(255,255,255)
 close.Font = Font
 close.BorderSizePixel = 0
 close.ZIndex = 2
+close.AutoButtonColor = false
+close.MouseEnter:Connect(function()
+	game.TweenService:Create(close,TweenInfo.new(0.3),{BackgroundColor3 = Color3.fromRGB(255,255,0)}):Play()
+end)
+close.MouseLeave:Connect(function()
+	game.TweenService:Create(close,TweenInfo.new(0.3),{BackgroundColor3 = Color3.fromRGB(255,0,0)}):Play()
+end)
 close.MouseButton1Click:Connect(function()
 	if closed then return end
 	closed = true
-	_G.loaded123FireDoors = nil
+	clickSound:Play()
+	game.TweenService:Create(close,TweenInfo.new(0.3),{BackgroundColor3 = Color3.fromRGB(255,75,0)}):Play()
 	game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0,0)}):Play()
 	task.wait(2)
 	wait(0)
@@ -75,7 +92,7 @@ end)
 local minimize = close:Clone()
 minimize.Parent = close.Parent
 minimize.Text = "-"
-minimize.BackgroundColor3 = Color3.fromRGB(150,150,150)
+minimize.BackgroundColor3 = Color3.fromRGB(75,75,75)
 minimize.Position = UDim2.fromScale(0.78,0.1)
 local minimized = false
 local oldpos = invisTopFrame.Position
@@ -91,6 +108,7 @@ maximize.BackgroundColor3 = minimize.BackgroundColor3
 maximize.TextScaled = true
 maximize.MouseButton1Click:Connect(function()
 	if not minimized or closed then return end
+	clickSound:Play()
 	minimized = false
 	mainFrame.Visible = true
 	game.TweenService:Create(maximize,TweenInfo.new(1,Enum.EasingStyle.Exponential),{Position = UDim2.fromScale(1.2,0.5)}):Play()
@@ -103,6 +121,7 @@ end)
 minimize.MouseButton1Click:Connect(function()
 	if minimized or closed then return end
 	minimized = true
+	clickSound:Play()
 	game.TweenService:Create(mainFrame,TweenInfo.new(2,Enum.EasingStyle.Exponential),{Size = UDim2.fromScale(0,0)}):Play()
 	game.TweenService:Create(maximize,TweenInfo.new(1,Enum.EasingStyle.Exponential),{Position = UDim2.fromScale(1,0.5)}):Play()
 	task.wait(1.8)
@@ -124,13 +143,21 @@ local grid = Instance.new("UIGridLayout",pagelist)
 grid.CellPadding = UDim2.fromOffset(0,5)
 grid.CellSize = UDim2.new(1,0,0,50)
 grid.SortOrder = Enum.SortOrder.LayoutOrder
+local mouse = game.Players.LocalPlayer:GetMouse()
+local m1Down = false
+mouse.Button1Down:Connect(function()
+	m1Down = true
+end)
+mouse.Button1Up:Connect(function()
+	m1Down = false
+end)
 local pagesFolder = Instance.new("Folder",mainFrame)
 local pageList = {}
 function pageList.AddPage(pageName)
 	local btn = Instance.new("TextButton",pagelist)
 	btn.Text = pageName
 	btn.TextScaled = true
-	btn.TextColor3 = Color3.fromRGB(255,255,255)
+	btn.TextColor3 = Color3.fromRGB(255,200,100)
 	btn.Font = Font 
 	btn.BackgroundColor3 = pagelist.BackgroundColor3
 	btn.BorderSizePixel = 0
@@ -148,6 +175,7 @@ function pageList.AddPage(pageName)
 	end)
 	frame.Visible = false
 	btn.MouseButton1Click:Connect(function()
+		clickSound:Play()
 		for i,v in pairs(pagesFolder:GetChildren()) do
 			v.Visible = false
 		end
@@ -162,21 +190,25 @@ function pageList.AddPage(pageName)
 		local label = Instance.new("TextLabel",frame)
 		label.Text = text
 		label.Font = Font
-		label.BackgroundColor3 = Color3.fromRGB(50,50,50)
+		label.BackgroundColor3 = Color3.fromRGB(75,60,45)
 		label.TextScaled = true
 		label.BorderSizePixel = 0
-		label.TextColor3 = Color3.fromRGB(255,255,255)
+		label.TextColor3 = Color3.fromRGB(255,200,100)
+		label.TextXAlignment = Enum.TextXAlignment.Left
 		return label
 	end
 	function funcs.CreateButton(text,func)
 		local label = Instance.new("TextButton",frame)
-		label.Text = text
+		label.Text = "["..text.."]"
 		label.Font = Font
-		label.BackgroundColor3 = Color3.fromRGB(150,150,150)
+		label.BackgroundColor3 = Color3.fromRGB(75,60,45)
 		label.TextScaled = true
 		label.BorderSizePixel = 0
-		label.TextColor3 = Color3.fromRGB(255,255,255)
-		label.MouseButton1Click:Connect(func)
+		label.TextColor3 = Color3.fromRGB(255,200,100)
+		label.MouseButton1Click:Connect(function()
+			func()
+			clickSound:Play()
+		end)
 		label.TextXAlignment = Enum.TextXAlignment.Left
 		return label
 	end
@@ -184,11 +216,11 @@ function pageList.AddPage(pageName)
 		local label = Instance.new("TextBox",frame)
 		label.PlaceholderText = text
 		label.Font = Font
-		label.BackgroundColor3 = Color3.fromRGB(75,75,75)
-		label.PlaceholderColor3 = Color3.fromRGB(200,150,150)
+		label.BackgroundColor3 = Color3.fromRGB(75,60,45)
+		label.PlaceholderColor3 = Color3.fromRGB(200,75,75)
 		label.TextScaled = true
 		label.BorderSizePixel = 0
-		label.TextColor3 = Color3.fromRGB(255,255,255)
+		label.TextColor3 = Color3.fromRGB(255,200,100)
 		label.ClearTextOnFocus = false
 		label.Text = ""
 		label.TextXAlignment = Enum.TextXAlignment.Left
@@ -204,22 +236,24 @@ function pageList.AddPage(pageName)
 		local label = Instance.new("TextButton",frame)
 		label.Text = text
 		label.Font = Font
-		label.BackgroundColor3 = Color3.fromRGB(150,150,150)
+		label.BackgroundColor3 = Color3.fromRGB(75,60,45)
 		label.TextScaled = true
 		label.BorderSizePixel = 0
 		label.TextColor3 = Color3.fromRGB(255,255,255)
 		label.TextXAlignment = Enum.TextXAlignment.Left
 		local status = Instance.new("TextLabel",label)
 		status.Size = UDim2.fromScale(0.2,0.9)
-		status.Position = UDim2.fromScale(0.775,0.05)
+		status.Position = UDim2.fromScale(0.7,0.05)
+		status.AnchorPoint = Vector2.new(0,0)
 		status.BackgroundColor3 = Color3.fromRGB(255,0,0)
 		status.Font = Font
 		status.TextScaled = true
 		status.TextColor3 = Color3.fromRGB(0,0,0)
 		status.Text = "OFF"
 		local corner = Instance.new("UICorner",status)
-		corner.CornerRadius = UDim.new(1,0)
+		corner.CornerRadius = UDim.new(0.2,0)
 		label.MouseButton1Click:Connect(function()
+			clickSound:Play()
 			toggle = not toggle
 			if not toggle then
 				status.Text = "OFF"
@@ -230,82 +264,99 @@ function pageList.AddPage(pageName)
 			end
 			func(toggle)
 		end)
+		local grad = Instance.new("UIGradient",status)
+		grad.Color = ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(100,100,100)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))}
+		grad.Rotation = -90
 		return label
 	end
 	function funcs.CreateSlider(text,minVal,maxVal,step,func)
-		local minVal = minVal
-		if minVal <= 0 then
-			minVal = 0
-		end
-		local step = step
-		if step <= 0 then
-			step = 0.1
-		end
-		local val = minVal
+		local actualMinVal = 0
+		local actualMaxVal = maxVal-minVal
+		local steps = (actualMaxVal/step)+1
+		local cStep = actualMinVal
 		local label = Instance.new("TextLabel",frame)
 		label.Text = text
 		label.Font = Font
-		label.BackgroundColor3 = Color3.fromRGB(75,60,60)
+		label.BackgroundColor3 = Color3.fromRGB(75,60,45)
 		label.TextScaled = true
 		label.BorderSizePixel = 0
 		label.TextXAlignment = Enum.TextXAlignment.Left
 		label.TextColor3 = Color3.fromRGB(255,255,255)
-		local slideBG = Instance.new("Frame",label)
-		slideBG.Size = UDim2.fromScale(0.5,0.9)
-		slideBG.Position = UDim2.fromScale(0.44,0.05)
-		slideBG.BorderSizePixel = 0
-		slideBG.BackgroundColor3 = Color3.fromRGB(50,0,0)
-		local valText = Instance.new("TextLabel",slideBG)
-		valText.Size = UDim2.fromScale(0.3,1)
-		valText.BackgroundTransparency = 1
-		valText.Font = Font
-		valText.Text = val
-		valText.TextScaled = true
-		valText.TextColor3 = Color3.fromRGB(255,0,0)
-		valText.Position = UDim2.fromScale(-0.4,0)
-		valText.TextXAlignment = Enum.TextXAlignment.Right
-		local fill = Instance.new("Frame",slideBG)
-		fill.Size = UDim2.fromScale(0,1)
-		fill.BorderSizePixel = 0
-		fill.BackgroundColor3 = Color3.fromRGB(255,0,0)
-		local gradient = Instance.new("UIGradient",slideBG)
-		gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(100,100,100))}
-		gradient.Rotation = 90
-		gradient:Clone().Parent = fill
-		local add = Instance.new("TextButton",slideBG)
-		add.Text = "+"
-		add.Size = UDim2.fromScale(0.1,1)
-		add.TextScaled = true
-		add.Font = Font
-		add.TextColor3 = Color3.fromRGB(255,255,255)
-		add.Position = UDim2.fromScale(1,0)
-		add.BorderSizePixel = 0
-		add.BackgroundColor3 = Color3.fromRGB(0,0,0)
-		local function formula()
-			return (maxVal-(maxVal-val))/maxVal
+		local sliderFrame = Instance.new("TextButton",label)
+		sliderFrame.Size = UDim2.fromScale(0.2,0.95)
+		sliderFrame.AnchorPoint = Vector2.new(0,0.5)
+		sliderFrame.Position = UDim2.fromScale(0.7,0.5)
+		sliderFrame.AutoButtonColor = false
+		sliderFrame.Text = ""
+		sliderFrame.BorderSizePixel = 0
+		sliderFrame.BackgroundColor3 = Color3.fromRGB(75,60,60)
+		sliderFrame.ClipsDescendants = true
+		local currentStep = Instance.new("TextLabel",label)
+		currentStep.BackgroundTransparency = 1
+		currentStep.Size = UDim2.fromScale(0.1,1)
+		currentStep.AnchorPoint = Vector2.new(0,0.5)
+		currentStep.Position = UDim2.fromScale(0.6,0.5)
+		currentStep.Text = minVal
+		currentStep.TextScaled = true
+		currentStep.Font = Font
+		currentStep.TextColor3 = Color3.fromRGB(255,255,0)
+		local UITable = Instance.new("UITableLayout",sliderFrame)
+		UITable.FillEmptySpaceRows = true
+		UITable.FillEmptySpaceColumns = true
+		UITable.FillDirection = Enum.FillDirection.Horizontal
+		UITable.SortOrder = Enum.SortOrder.LayoutOrder
+		local mouseEnter = false
+		for i=1,steps do
+			local stepButton = Instance.new("TextButton",sliderFrame)
+			stepButton.BackgroundTransparency = 1
+			stepButton.BackgroundColor3 = Color3.fromRGB(255,150,0)
+			stepButton.BorderSizePixel = 0
+			stepButton.Text = ""
+			stepButton.AutoButtonColor = false
+			stepButton.MouseEnter:Connect(function()
+				if m1Down then
+					mouseEnter = true
+					coroutine.wrap(function()
+						task.wait(0.1)
+						mouseEnter = false
+					end)()
+					cStep = (math.round(((i-1)*step)*1000))/1000
+					currentStep.Text = cStep+minVal
+					for i,v in pairs(sliderFrame:GetChildren()) do
+						if v and v:IsA("TextButton") then
+							v.BackgroundTransparency = 1
+						end
+					end
+					stepButton.BackgroundTransparency = 0
+					coroutine.wrap(function()
+						stepButton.MouseLeave:Wait()
+						if not mouseEnter then
+							m1Down = false
+						end
+					end)()
+					func(cStep+minVal)
+				end
+			end)
+			stepButton.MouseButton1Down:Connect(function()
+				cStep = (math.round(((i-1)*step)*1000))/1000
+				m1Down = true
+				coroutine.wrap(function()
+					task.wait(0.1)
+					mouseEnter = false
+				end)()
+				currentStep.Text = cStep+minVal
+				for i,v in pairs(sliderFrame:GetChildren()) do
+					if v and v:IsA("TextButton") then
+						v.BackgroundTransparency = 1
+					end
+				end
+				stepButton.BackgroundTransparency = 0
+				func(cStep+minVal)
+			end)
+			stepButton.MouseButton1Up:Connect(function()
+				m1Down = false
+			end)
 		end
-		add.MouseButton1Click:Connect(function()
-			val = val + step
-			if val == maxVal or val >= maxVal then
-				val = maxVal
-			end
-			game.TweenService:Create(fill,TweenInfo.new(0.5),{Size = UDim2.fromScale(formula(),1)}):Play()
-			valText.Text = math.round(val*10)/10
-			func(val)
-		end)
-		local minus = add:Clone()
-		minus.Parent = add.Parent
-		minus.Text = "-"
-		minus.Position = UDim2.fromScale(-0.1,0)
-		minus.MouseButton1Click:Connect(function()
-			val = val - step
-			if val == minVal or val <= minVal then
-				val = minVal
-			end
-			game.TweenService:Create(fill,TweenInfo.new(0.5),{Size = UDim2.fromScale(formula(),1)}):Play()
-			valText.Text = math.round(val*10)/10
-			func(val)
-		end)
 		return label
 	end
 	return funcs
@@ -325,19 +376,28 @@ function pageList.Notify(text,time)
 	coroutine.wrap(function()
 		local time = time or 5
 		local frame = Instance.new("Frame",notificationLabel)
+		local stroke = Instance.new("UIStroke",frame)
+		stroke.Color = Color3.fromRGB(0,0,0)
+		stroke.Thickness = 3
+		local notificationSound = Instance.new("Sound",frame)
+		notificationSound.SoundId = "rbxassetid://4590662766"
+		notificationSound:Play()
 		frame.Size = UDim2.fromScale(1,0)
-		frame.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+		frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 		frame.BorderSizePixel = 0
 		local timer = Instance.new("Frame",frame)
 		timer.Size = UDim2.fromScale(1,0.05)
 		timer.Position = UDim2.fromScale(0,0.1)
-		timer.BackgroundColor3 = Color3.fromRGB(85,85,85)
+		timer.BackgroundColor3 = Color3.fromRGB(75,50,50)
 		timer.BorderSizePixel = 0
 		timer.ZIndex = timer.ZIndex + 1
 		local fframe = timer:Clone()
 		fframe.Parent = timer.Parent
-		fframe.BackgroundColor3 = Color3.fromRGB(50,50,50)
+		fframe.BackgroundColor3 = Color3.fromRGB(25,25,25)
 		fframe.ZIndex = fframe.ZIndex - 1
+		local stroke = stroke:Clone()
+		stroke.Parent = fframe
+		stroke.Thickness = 1
 		local title = Instance.new("TextLabel",frame)
 		title.BackgroundTransparency = 1
 		title.TextXAlignment = Enum.TextXAlignment.Left
@@ -360,5 +420,28 @@ function pageList.Notify(text,time)
 		wait(0.5)
 		frame:Destroy()
 	end)()
+end
+if game["Run Service"]:IsStudio() then
+	local page = pageList.AddPage("test")
+	page.CreateLabel("test")
+	page.CreateSwitch("test",function(a)
+		print(a)
+	end)
+	page.CreateSlider("test",0,1,1,function(a)
+		print(a)
+	end)
+	page.CreateSlider("test",1,3,1,function(a)
+		print(a)
+	end)
+	page.CreateSlider("test",3,5,0.2,function(a)
+		print(a)
+	end)
+	page.CreateTextBox("test",function(a)
+		print(a)
+	end)
+	page.CreateButton("test",function(a)
+		print(a)
+	end)
+	pageList.Notify("test",5)
 end
 return pageList,close,mainFrame,screenGui,logo,title
