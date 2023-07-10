@@ -249,7 +249,6 @@ function pageList.AddPage(pageName)
 		end
 		coroutine.wrap(function()
 			close.MouseButton1Click:Wait()
-			task.wait(0.2)
 			func("")
 		end)()
 		return label
@@ -326,7 +325,6 @@ function pageList.AddPage(pageName)
 		grad.Rotation = -90
 		coroutine.wrap(function()
 			close.MouseButton1Click:Wait()
-			task.wait(0.2)
 			func(false)
 		end)()
 		return label
@@ -433,7 +431,6 @@ function pageList.AddPage(pageName)
 		end
 		coroutine.wrap(function()
 			close.MouseButton1Click:Wait()
-			task.wait(0.2)
 			func(minVal)
 		end)()
 		return label
