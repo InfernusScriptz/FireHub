@@ -1,4 +1,5 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScriptz/FixJSON/main/fix.lua"))()
+
 local Font = Enum.Font.Oswald
 local name = "Fire Hub"
 local ver = "2.0.1"
