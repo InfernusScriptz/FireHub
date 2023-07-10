@@ -5,7 +5,7 @@ local fullName = name.." ["..ver.."]"
 _G.fullName = _G.fullName or fullName
 _G.actualName = _G.actualName or name
 _G.logoImage = _G.logoImage or "http://www.roblox.com/asset/?id=124133244"
-local parent = game["Run Service"]:IsStudio() and game.Players.LocalPlayer.PlayerGui or not game["Run Service"]:IsStudio() and game.CoreGui or game.Players.LocalPlayer.PlayerGui
+local parent = game.Players.LocalPlayer.PlayerGui
 local screenGui = Instance.new("ScreenGui",parent)
 screenGui.DisplayOrder = 25000
 local clickSound = Instance.new("Sound",screenGui)
